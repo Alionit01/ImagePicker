@@ -2,8 +2,11 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Image, ImageSource } from 'expo-image'
 
+
+
+
 type props = {
-    imgSource: ImageSource
+    imageSource: ImageSource,
 }
 
 export default function imageViewer (imageSource: props) {
