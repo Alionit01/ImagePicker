@@ -7,12 +7,13 @@ import { Image, ImageSource } from 'expo-image'
 
 type props = {
     imageSource: ImageSource,
+    selectedImage?: string;
 }
 
-export default function imageViewer (imageSource: props) {
-  return (
-    <Image source={imageSource}  style={styles.image}/>
-  )
+export default function imageViewer ({imageSource, selectedImage}: props) {
+  const imgSource = selectedImage ? {uri: selectedImage}: imageSource;
+  
+  return <Image source={imgSource}  style={styles.image}/>
 }
 
 
