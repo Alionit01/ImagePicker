@@ -1,9 +1,10 @@
 import { View } from 'react-native';
 import { Image, type ImageSource } from 'expo-image';
-import { AnimatedImage } from 'react-native-reanimated/lib/typescript/component/Image';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'; 
+import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
+const AnimatedImage = Animated.createAnimatedComponent(Image); 
 
 type Props = {
     imageSize: number;
@@ -13,6 +14,26 @@ type Props = {
 export default function EmojiSticker({ imageSize, stickerSource }: Props) {
 
     const scaleImage = useSharedValue(imageSize);
+    const translateX = useSharedValue(0);
+    const translateY = useSharedValue(0);
+    const drag = Gesture.Pan().onChange(event => {
+        translateX.value += event.changeX;
+        translateY.value += event.changeY;
+      });
+      
+      const containerStyle = useAnimatedStyle(() => {
+        return {
+          transform: [
+            {
+              translateX: translateX.value,
+            },
+            {
+              translateY: translateY.value,
+            },
+          ],
+        };
+      });
+      
     const imageStyle = useAnimatedStyle(() => {
         return {
             width: withSpring(scaleImage.value),
@@ -31,7 +52,8 @@ export default function EmojiSticker({ imageSize, stickerSource }: Props) {
 
 
     return (
-        <View style={{ top: -350 }}>
+        <GestureDetector gesture={drag}>
+        <Animated.View style={[containerStyle, { top: -350 }]}>
             <GestureDetector gesture={doubleTap}>
             <AnimatedImage
                 source={stickerSource}
@@ -39,6 +61,7 @@ export default function EmojiSticker({ imageSize, stickerSource }: Props) {
                 style={[imageStyle, { width: imageSize, height: imageSize }]}
             />
             </GestureDetector>
-        </View>
+        </Animated.View>
+        </GestureDetector>
     );
 }
