@@ -1,5 +1,4 @@
-import { Link } from "expo-router";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet,  } from "react-native";
 import { Image } from 'expo-image';
 import ImageViewer from "@/components/imageViewer";
 import Button from "@/components/button";
